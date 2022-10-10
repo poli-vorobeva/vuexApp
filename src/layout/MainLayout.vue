@@ -1,6 +1,7 @@
 <template>
     <div>
 <the-nav></the-nav>
+        main
     </div>
 </template>
 
