@@ -1,12 +1,12 @@
 <template>
-    <div>
-Auth
-    </div>
+    <router-view></router-view>
 </template>
 
 <script>
-	export default {
+	import Auth from "@/views/Auth.vue";
 
+	export default {
+		components: {Auth}
 	}
 </script>
 
