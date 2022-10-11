@@ -12,14 +12,29 @@
                 <router-link to="/">Сообщения</router-link>
             </li>
             <li>
-                <router-link to="/">Выход</router-link>
+                <router-link to="/" @click.prevent="logout">Выход</router-link>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
-	export default {}
+	import {useRouter} from "vue-router";
+	import {useStore} from "vuex";
+
+	export default {
+		setup() {
+			const router = useRouter()
+			const store = useStore()
+			return {
+				logout() {
+					store.commit('auth/logout')
+					router.push('/auth')
+				}
+			}
+		},
+
+	}
 </script>
 
 <style scoped>
@@ -31,16 +46,19 @@
         flex-flow: row nowrap;
         justify-content: space-between;
     }
-    .navList{
+
+    .navList {
         width: 40vw;
         justify-content: space-around;
         display: flex;
         flex-flow: row nowrap;
     }
-    .navList li{
+
+    .navList li {
         list-style: none;
     }
-    .navList li a{
+
+    .navList li a {
         text-decoration: none;
     }
 </style>
