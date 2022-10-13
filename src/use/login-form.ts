@@ -9,6 +9,7 @@ export function useLoginForm() {
 	const router=useRouter()
 
 	const {handleSubmit, isSubmitting, submitCount} = useForm()
+	//console.log(submitCount.value,'COUNTSUB')
 	const {value: email, errorMessage: eError, handleBlur: eBlur} = useField<string>(
 		'email',
 		yup
@@ -23,13 +24,14 @@ export function useLoginForm() {
 	)
 	const isTooManyAttempts = computed(() => submitCount.value >= 3)
 	watch(isTooManyAttempts, val => {
+		//console.log("VAL",val)
 		if (val) {
 			setTimeout(() => submitCount.value = 0, 1500)
 		}
 	})
 	const onSubmit = handleSubmit(async (values:Record<string, string>) => {
 		await store.dispatch('auth/login',values)
-		router.push('/')
+		await router.push('/')
 	})
 	return{
 		email,password,eError,pError,eBlur,pBlur,onSubmit,isSubmitting,isTooManyAttempts

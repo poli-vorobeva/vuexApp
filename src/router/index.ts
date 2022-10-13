@@ -31,7 +31,9 @@ const router = createRouter({
 				layout: 'auth'
 			}
 		}
-	]
+	],
+	linkActiveClass:'active',
+	linkExactActiveClass:'active'
 })
 router.beforeEach(
 	(to, from, next) => {

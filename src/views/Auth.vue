@@ -5,11 +5,11 @@
             <input type="email" id="email" v-model="email" @blur="eBlur"/>
             <small v-if="eError">{{eError}}</small>
         </div>
-      <div :class="['formElement',{invalid:pError}]">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" @blur="pBlur"/>
-          <small v-if="pError">{{pError}}</small>
-      </div>
+        <div :class="['formElement',{invalid:pError}]">
+            <label for="password">Password</label>
+            <input type="password" id="password" v-model="password" @blur="pBlur"/>
+            <small v-if="pError">{{pError}}</small>
+        </div>
         <button :disabled="isTooManyAttempts||isSubmitting">Войти</button>
         <div v-if="isTooManyAttempts">Вы слишком часто пытаетесь войти в систему</div>
     </form>
@@ -17,10 +17,19 @@
 
 <script>
 	import {useLoginForm} from "@/use/login-form";
+	import {useRoute} from "vue-router";
+	import {error} from "@/utils/error";
+	import {useStore} from "vuex";
 
-		export default {
+	export default {
 		setup() {
-
+			const store = useStore()
+			const route = useRoute()
+			if (route.query.message) {
+				store.dispatch('setMessage', {
+					value: error(route.query.message)
+				})
+			}
 			return {...useLoginForm()}
 		}
 	}
@@ -42,15 +51,18 @@
         align-items: center;
         box-shadow: 0 0 20px 0 grey;
     }
-.formElement{
-    display: flex;
-    flex-flow: column nowrap;
-    width: 100%;
-    align-items: center;
-}
-.invalid input{
-    box-shadow: inset 0 0 5px 5px #c6626266;
-}
+
+    .formElement {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+        align-items: center;
+    }
+
+    .invalid input {
+        box-shadow: inset 0 0 5px 5px #c6626266;
+    }
+
     input {
         border-radius: 10px;
         width: 50%;

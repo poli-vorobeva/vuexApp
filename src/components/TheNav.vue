@@ -6,13 +6,13 @@
                 <router-link to="/">Заявки</router-link>
             </li>
             <li>
-                <router-link to="/">Помощь</router-link>
+                <router-link to="/help">Помощь</router-link>
             </li>
             <li>
-                <router-link to="/">Сообщения</router-link>
+                <router-link to="/messages">Сообщения</router-link>
             </li>
             <li>
-                <router-link to="/" @click.prevent="logout">Выход</router-link>
+                <router-link to="/exit" @click.prevent="logout">Выход</router-link>
             </li>
         </ul>
     </div>
@@ -38,6 +38,7 @@
 </script>
 
 <style scoped>
+
     .navWrapper {
         width: 100vw;
         height: 50px;
@@ -60,5 +61,8 @@
 
     .navList li a {
         text-decoration: none;
+    }
+    .navList li > .active{
+        text-decoration: underline #2c5f4d;
     }
 </style>

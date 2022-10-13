@@ -1,4 +1,6 @@
-import type {Commit} from 'vuex'
+import type {Commit, Dispatch} from 'vuex'
+import axios from "axios";
+import {error} from "@/utils/error";
 
 const TOKEN_KEY = ' jwt-token'
 type stateType = {
@@ -17,26 +19,40 @@ export default {
 			state.token = token
 			localStorage.setItem(TOKEN_KEY, token)
 		},
-		logout(state:stateType):void{
-			state.token=''
+		logout(state: stateType): void {
+			state.token = ''
 			localStorage.removeItem(TOKEN_KEY)
 		}
 	},
 	actions: {
-		async login({ commit }: { commit: Commit },payload:Record<string, string>) {
-			commit('setToken', 'TEST TOKEN')
+		async login({commit, dispatch}: { commit: Commit, dispatch: Dispatch }, payload: Record<string, string>) {
+			try {
+				const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${import.meta.env.VITE_FB_KEY}`
+				const {data} = await axios.post(url, {
+					...payload, returnSecureToken: true,
+				})
+				commit('setToken', 'TEST TOKEN')
+				commit('clearMessage',null,{root:true})
+			} catch (e: unknown) {
+				await dispatch('setMessage',
+					{
+						// @ts-ignore
+						value: error(e.response.data.error.message)
+					}, {root: true})
+				throw new Error()
+			}
 		}
 	},
 	getters: {
 		token(state: stateType): string {
 			return state.token
 		},
-		isAuthenticated(_:null,getters:gettersType): boolean {
+		isAuthenticated(_: null, getters: gettersType): boolean {
 			return !!getters.token
 		}
 	}
 }
-type gettersType={
-	token:(state:stateType)=>string,
-	isAuthenticated:(_:null,getters:gettersType)=> boolean
+type gettersType = {
+	token: (state: stateType) => string,
+	isAuthenticated: (_: null, getters: gettersType) => boolean
 }
