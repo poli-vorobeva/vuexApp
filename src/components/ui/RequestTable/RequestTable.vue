@@ -10,8 +10,12 @@
        </tr>
        </thead>
        <tbody>
-       <tr>
-           <td></td>
+       <tr v-for="(r,indx) in requests" :key="r.id">
+           <td>{{indx+1}}</td>
+           <td>{{r.fio}}</td>
+           <td>{{r.phone}}</td>
+           <td>{{r.amount}}</td>
+           <td>{{r.status}}</td>
        </tr>
        </tbody>
    </table>

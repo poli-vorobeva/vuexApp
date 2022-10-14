@@ -2,7 +2,7 @@ import type {Commit, Dispatch} from 'vuex'
 import axios from "axios";
 import {error} from "@/utils/error";
 
-const TOKEN_KEY = ' jwt-token'
+const TOKEN_KEY = 'jwt-token'
 type stateType = {
 	token: string
 }
@@ -31,7 +31,8 @@ export default {
 				const {data} = await axios.post(url, {
 					...payload, returnSecureToken: true,
 				})
-				commit('setToken', 'TEST TOKEN')
+
+				commit('setToken', data.idToken)
 				commit('clearMessage',null,{root:true})
 			} catch (e: unknown) {
 				await dispatch('setMessage',

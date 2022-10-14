@@ -1,13 +1,14 @@
 import {createStore, createLogger} from 'vuex';
 import auth from './modules/auth.module'
+import request from './modules/request.module'
 
 const plugins = []
 
 if (process.env.NODE_ENV === 'development') {
 	plugins.push(createLogger())
 }
-type stateType={
-	message:string
+type stateType = {
+	message: string
 }
 export default createStore({
 	plugins,
@@ -19,9 +20,7 @@ export default createStore({
 	},
 	mutations: {
 		setMessage(state, message) {
-		//	console.log(message.value,'$$')
 			state.message = message.value
-			//console.log(state.message,'setMessage')
 		},
 		clearMessage(state) {
 			state.message = null
@@ -30,12 +29,12 @@ export default createStore({
 	actions: {
 		setMessage({commit}, message) {
 			commit('setMessage', message)
-			setTimeout(()=>{
+			setTimeout(() => {
 				commit('clearMessage')
-			},5000)
+			}, 5000)
 		}
 	},
 	modules: {
-		auth
+		auth, request
 	}
 })
