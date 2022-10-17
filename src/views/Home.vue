@@ -4,7 +4,8 @@
         <template #header>
             <request-filter v-if="requests"
                             @onFilter='onFilterRequests'
-                            :requests="requests"
+                            @onSortStatus="onSortStatus"
+                            :requests="dataForRequests"
             ></request-filter>
             <button @click="modal=true">Создать</button>
             <request-table v-if="dataForRequests"
@@ -43,21 +44,26 @@
 			})
 			const onFilterRequests = (data) => {
 				filteredData.value = data
+				console.log("!!!!", filteredData.value)
 			}
 			const dataForRequests = computed(() => {
+				console.log("$$$$", filteredData)
 				if (filteredData.value?.length > 0) {
 					return filteredData.value
 				}
-				else if(filteredData.value?.length===0){
+				else if (filteredData.value?.length === 0) {
 					return {}
-                }
+				}
 				else if (requests.value.length > 0) {
 					return requests.value
 				}
 				return null
 			})
+			const onSortStatus = (data) => {
+				filteredData.value = data
+			}
 			return {
-				modal, requests, isLoading, onFilterRequests, dataForRequests
+				modal, requests, isLoading, onFilterRequests, dataForRequests, onSortStatus
 			}
 		},
 		components: {AppPage, RequestTable, AppModal, RequestModal, RequestFilter}

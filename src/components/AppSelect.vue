@@ -5,11 +5,13 @@
             v-model="props.status"
             @change="changeSelect"
     >
+        <slot/>
         <option
                 v-for='(key,value) in options'
                 :value="value"
                 :selected="defaultSelected"
-        >{{key}}</option>
+        >{{key}}
+        </option>
     </select>
 </template>
 <script>
@@ -22,17 +24,21 @@
 				type: String,
 				required: false
 			},
-			status: String
+			status: {
+				type: String
+			}
 		},
 		setup(props, {emit}) {
 			const store = useStore()
 			const options = store.getters['request/getOptionsData']
-			const changeSelect = (e) => {emit('changeSelect', e.target.value)}
-			const defaultSelected=(value)=>{
-				return value==='active'? ' selected':''
-            }
+			const changeSelect = (e) => {
+				console.log("%%%",e.target.value)
+				emit('changeSelect', e.target.value)}
+			const defaultSelected = (value) => {
+				return value === 'active' ? ' selected' : ''
+			}
 			return {
-				props, changeSelect,options,defaultSelected
+				props, changeSelect, options, defaultSelected
 			}
 		}
 	}

@@ -31,8 +31,7 @@
 		setup(_, {emit}) {
 			const store = useStore()
 			const submit = async (values) => {
-				console.log(values, '))')
-				await store.dispatch('request/create', values)
+					await store.dispatch('request/create', values)
 				emit('created')
 			}
 			const requestForm = useRequestForm(submit)
