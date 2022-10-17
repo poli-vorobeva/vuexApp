@@ -4,7 +4,9 @@
     </div>
 </template>
 <script>
-    import {ref} from 'vue'
+	import {ref} from 'vue'
+	import {useStore} from 'vuex'
+
 	export default {
 		props: {
 			type: {
@@ -13,14 +15,9 @@
 			}
 		},
 		setup(props) {
-			console.log(props.value)
-			const statusString = {
-				done: 'Готово',
-				cancelled: 'Отменен',
-				active: 'Активный',
-				pending: 'Ожидает',
-			}
-			const statusStyle = {
+			const store = useStore()
+			const statusString = store.getters['request/getOptionsData']
+          	const statusStyle = {
 				done: 'green',
 				cancelled: 'red',
 				active: 'orange',

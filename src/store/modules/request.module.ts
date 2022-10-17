@@ -3,7 +3,8 @@ import store from '../index'
 import type {Commit, Dispatch} from "vuex";
 
 type stateType = {
-	requests: unknown[]
+	requests: unknown[],
+	optionsData:Record<string, string>
 }
 type createType = { fio: string, phone: string, amount: number, action: string }
 interface arrayDataType extends createType{
@@ -13,7 +14,14 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			requests: []
+			requests: [],
+			optionsData:{
+				done:'Готово',
+				cancelled:'Отменен',
+				active:'Активный',
+				pending:'Ожидает'
+			}
+
 		}
 	},
 	mutations: {
@@ -43,9 +51,12 @@ export default {
 			try {
 				const token = store.getters['auth/token']
 				const {data} = await requestAxios.get(`/requests.json?auth=${token}`)
-				const arrayFromData = Object.keys(data).map((el)=>{
-				return {...data[el],id:el}
+				const arrayFromData:createType[] =[]
+					if(data){
+						Object.keys(data).forEach((el)=>{
+							arrayFromData.push({...data[el],id:el})
 				})
+			}
 				commit('setRequests', arrayFromData)
 			} catch (e) {
 				// @ts-ignore
@@ -56,6 +67,9 @@ export default {
 	getters: {
 		getRequests(state: stateType) {
 			return state.requests
+		},
+		getOptionsData(state:stateType){
+			return state.optionsData
 		}
 	}
 }
